@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Interview Practice</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/buefy/dist/buefy.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/recorderjs/0.1.0/recorder.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <section class="section">
+            <div class="container has-text-centered">
+                <h1 class="title">
+                    Interview Practice
+                </h1>
+                <p class="subtitle">
+                    Practice answering interview questions with this website
+                </p>
+                <b-field label="Interview Question">
+                    <b-select placeholder="Select an interview question" v-model="currentQuestion">
+                        <option v-for="question in questions" :value="question.text" :key="question.id">
+                            {{ question.text }}
+                        </option>
+                    </b-select>
+                </b-field>
+                <button class='button' v-on:click="randomQuestion">
+                    Random
+                </button>
+            </div>
+        </section>
+    </div>
+</body>
+<script>
+    interviewPractice = new Vue({
+        el: "#app",
+        data: {
+            questions: [
+                { "id": 1, "text": "Tell me about yourself" },
+                { "id": 2, "text": "Why are you applying for this position?" }],
+            currentQuestion: null,
+        },
+        watch: {
+            currentQuestion: function (newVal) {
+                var msg = new SpeechSynthesisUtterance(newVal);
+                window.speechSynthesis.speak(msg);
+            }
+        },
+        methods: {
+            randomQuestion: function () {
+                this.currentQuestion = this.questions[Math.floor(Math.random() * this.questions.length)].text
+            }
+        }
+    })
+</script>
+
+</html>
